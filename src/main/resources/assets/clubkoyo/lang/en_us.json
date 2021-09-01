@@ -1,0 +1,9 @@
+{
+  "clubkoyo.version": "ClubKoyo ${version} (MC${mc_version})",
+  "clubkoyo.bind.category": "MineClub",
+  "clubkoyo.bind.home": "Go Home",
+  "clubkoyo.bind.spawn": "Go to Spawn",
+  "clubkoyo.bind.phone": "Open Phone",
+  "clubkoyo.bind.friends": "Open Friends List",
+  "clubkoyo.bind.inventory": "Open Extra Inventory"
+}

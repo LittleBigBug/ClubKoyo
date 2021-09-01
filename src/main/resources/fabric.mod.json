@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "clubkoyo",
+  "version": "${version}",
+
+  "name": "ClubKoyo",
+  "description": "MineClub.com mod that provides utilities for playing and interacting with the server.",
+  "authors": [
+    "LittleBigBug"
+  ],
+  "contact": {
+    "homepage": "https://github.com/LittleBigBug",
+    "sources": "https://github.com/LittleBigBug/ClubKoyo"
+  },
+
+  "license": "GPLv3",
+  "icon": "assets/clubkoyo/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.yasfu.clubkoyo.client.ClubModClient"
+    ]
+  },
+  "mixins": [
+    "clubkoyo.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.16.x",
+    "java": ">=8"
+  }
+}
