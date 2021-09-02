@@ -16,6 +16,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation "org.reflections:reflections:0.9.12"
 }
 
 processResources {
@@ -27,7 +29,7 @@ processResources {
             "mc_version" : project.mc_version
     ]
 
-    filesMatching (['**/*.json']) {
+    filesMatching ('**/*.json') {
         expand props
     }
 }
