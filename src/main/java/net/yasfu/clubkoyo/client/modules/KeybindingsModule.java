@@ -50,7 +50,7 @@ public class KeybindingsModule implements Module {
     }
 
     private void onClientEndTick(MinecraftClient client) {
-        if (client.player == null) return;
+        if (client.player == null || !ServerUtils.connectedToMineClub(client)) return;
 
         // Todo; do checks if in a game
         if (homeKeybind.wasPressed()) {

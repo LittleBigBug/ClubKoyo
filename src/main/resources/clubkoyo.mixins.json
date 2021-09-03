@@ -6,6 +6,7 @@
   "mixins": [],
   "client": [
     "DontUnloadServerResourcePack",
+    "debug.DebugMixin",
     "TitleScreenMixin"
   ],
   "injectors": {

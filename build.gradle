@@ -1,6 +1,7 @@
 plugins {
     id 'maven-publish'
     id 'fabric-loom' version '0.7-SNAPSHOT'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 group = "net.yasfu"
@@ -11,26 +12,48 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    toShade { }
+    modImplementation.extendsFrom(toShade)
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.mc_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "org.reflections:reflections:0.9.12"
+    toShade "org.reflections:reflections:0.9.12"
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mc_version", project.mc_version
+tasks {
+    shadowJar {
+        configurations = [project.configurations.toShade]
+    }
 
-    def props = [
-            "version" : project.version,
-            "mc_version" : project.mc_version
-    ]
+    remapJar {
+        dependsOn ":shadowJar"
+        input.set shadowJar.archiveFile
+    }
 
-    filesMatching ('**/*.json') {
-        expand props
+    build {
+        doLast {
+            shadowJar.archiveFile.get().asFile.delete()
+        }
+    }
+
+    java {
+        withSourcesJar()
+
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
+        }
+    }
+
+    jar {
+        from("LICENSE") {
+            rename { "${it}_${project.archivesBaseName}"}
+        }
     }
 }
 
@@ -53,33 +76,16 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mc_version", project.mc_version
 
-java {
-    withSourcesJar()
+    def props = [
+            "version" : project.version,
+            "mc_version" : project.mc_version
+    ]
 
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
+    filesMatching ('**/*.json') {
+        expand props
     }
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    repositories { }
 }
